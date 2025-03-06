@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ctfshow_pwn前置杂记 | mint1.</title><meta name="author" content="mint"><meta name="copyright" content="mint"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一些Linux指令SSHSSH（Secure Shell）是一种网络协议，用于安全地远程登录到计算机系统。SSH 主要用于以下场景： 远程命令行登录文件传输（通过 SFTP 或 SCP）端口转发 使用格式： ssh ctfshow@题目地址 -p题目端口号 lsls 命令用于列出目录内容 eg:  ls：列出当前目录的内容。  ls -l：以长格式列出当前目录的内容，显示文件的详细信息。  ls">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow_pwn前置杂记">
+<meta property="og:url" content="http://cdu-mint.github.io/2024/11/04/ctfshow%E5%89%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="mint1.">
+<meta property="og:description" content="一些Linux指令SSHSSH（Secure Shell）是一种网络协议，用于安全地远程登录到计算机系统。SSH 主要用于以下场景： 远程命令行登录文件传输（通过 SFTP 或 SCP）端口转发 使用格式： ssh ctfshow@题目地址 -p题目端口号 lsls 命令用于列出目录内容 eg:  ls：列出当前目录的内容。  ls -l：以长格式列出当前目录的内容，显示文件的详细信息。  ls">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://cdu-mint.github.io/images/Decoration/%E9%9B%85.jpg">
+<meta property="article:published_time" content="2024-11-04T11:18:47.691Z">
+<meta property="article:modified_time" content="2024-12-25T08:24:56.860Z">
+<meta property="article:author" content="mint">
+<meta property="article:tag" content="pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cdu-mint.github.io/images/Decoration/%E9%9B%85.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cdu-mint.github.io/2024/11/04/ctfshow%E5%89%8D%E7%BD%AE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":230},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ctfshow_pwn前置杂记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-25 16:24:56'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/Decoration/%E9%9B%85.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="mint1."><span class="site-name">mint1.</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ctfshow_pwn前置杂记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-04T11:18:47.691Z" title="Created 2024-11-04 19:18:47">2024-11-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-25T08:24:56.860Z" title="Updated 2024-12-25 16:24:56">2024-12-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ctfshow_pwn前置杂记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一些Linux指令"><a href="#一些Linux指令" class="headerlink" title="一些Linux指令"></a>一些Linux指令</h2><h3 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h3><p>SSH（Secure Shell）是一种网络协议，用于安全地远程登录到计算机系统。SSH 主要用于以下场景：</p>
+<p>远程命令行登录<br>文件传输（通过 SFTP 或 SCP）<br>端口转发</p>
+<p>使用格式：</p>
+<p>ssh ctfshow@题目地址 -p题目端口号</p>
+<h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h3><p><code>ls</code> 命令用于列出目录内容</p>
+<p>eg:</p>
+<ul>
+<li><p><code>ls</code>：列出当前目录的内容。</p>
+</li>
+<li><p><code>ls -l</code>：以长格式列出当前目录的内容，显示文件的详细信息。</p>
+</li>
+<li><p><code>ls -a</code>：列出当前目录的所有文件，包括隐藏文件（以点开头的文件）。</p>
+</li>
+<li><p><code>ls /path/to/directory/</code>：列出指定目录的内容。</p>
+<p>注：ls后加 &#x2F; 是为了明确指定路径避免歧义</p>
+</li>
+</ul>
+<h3 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h3><p><code>nc</code>（Netcat）是一个功能强大的网络工具，用于读取和写入网络连接</p>
+<p>看起来你正在使用 <code>gdb</code>（GNU 调试器）来调试一个程序。<code>gdb</code> 是一个强大的工具，可以帮助你分析和调试程序的行为。如果你有具体的调试需求或遇到问题，请告诉我更多细节，我可以提供进一步的帮助。</p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p>echo 是一个常用的命令行工具，用于<strong>将指定的文本输出到标准输出设备（通常是终端，也可以是指定文件）</strong>。这个命令非常简单但功能强大，常用于脚本编写和日常操作中的调试信息显示。</p>
+<p>echo [选项] [字符串]</p>
+<p>利用echo将CTFshow写入key文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;CTFshow&quot;&gt;key  //&gt;为重定向，可以理解为重定向了标准输出设备</span><br></pre></td></tr></table></figure>
+
+<p>常见选项：</p>
+<p>-n : 不输出末尾的换行符</p>
+<p>-e : 启用对反斜杠转义字符的支持</p>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p>使用 <code>exec</code> 可以让新的命令完全替代当前的 shell 进程，而不仅仅是作为一个子进程运行。</p>
+<p>exec [选项] 命令 [参数…]</p>
+<p>当获得一个shell后可使用exec执行特定命令：</p>
+<p>程序给了我们一个shell但是不是交互式的我们可以使用了exec函数来执行sh命令，并使用1&gt;&amp;0来进行输出重定向，即<code>exec sh 1&gt;&amp;0</code>这个命令将标准输出重定向到标准输入，实际上就是将命令的输出发送到后续命令的输入。具体来说，1&gt;&amp;0中的1表示标准输出，0表示标准输入。通过将标准输出重定向到标准输入，可以实现将命令的输出作为后续命令的输入。这样可以在执行sh命令后，进入一个交互式的Shl环境，可以在该环境中执行命令并与用户进行交互。<br>也可以直接exec cat&#x2F;ctf* 1&gt;&amp;0将cat&#x2F;ctf*命令的输出发送到标准输入，<strong>实际上就是将命令的输</strong><br><strong>出再次输出到屏幕上。</strong></p>
+<h2 id="编译与链接"><a href="#编译与链接" class="headerlink" title="编译与链接"></a>编译与链接</h2><p>在编译和链接命令中，<code>-o</code> 是一个常用的选项，用于指定输出文件的名称。</p>
+<h3 id="nasm"><a href="#nasm" class="headerlink" title="nasm"></a>nasm</h3><p>nasm是一种汇编语言编译器，用于将低级的汇编代码转换成机器码。它支持多种输出格式，包括但不限于ELF、COFF和二进制文件等。</p>
+<p>利用nasm将.asm(文本文件)编译成ELF格式的.o(对象文件): </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nasm -f elf flag.asm -o flag.o</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-f elf</code>: 指定输出文件的格式为ELF（Executable and Linkable Format），这是Linux系统常用的二进制文件格式。</li>
+<li><code>flag.asm</code>: 输入的汇编源代码文件。</li>
+<li><code>-o flag.o</code>: 指定输出的文件名为 <code>flag.o</code>，这是一个对象文件。</li>
+</ul>
+<h3 id="ld"><a href="#ld" class="headerlink" title="ld"></a>ld</h3><p>ld为链接器，用于将对象文件链接成一个可执行文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld -m elf_i386 -o flag flag.o</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-m elf_i386</code>: 指定目标架构为i386（即32位x86架构）。这确保生成的可执行文件适用于32位系统。</li>
+<li><code>-o flag</code>: 指定输出的可执行文件名为 <code>flag</code>。</li>
+<li><code>flag.o</code>: 输入的对象文件。</li>
+</ul>
+<h2 id="常见的-gdb-命令："><a href="#常见的-gdb-命令：" class="headerlink" title="常见的 gdb 命令："></a>常见的 gdb 命令：</h2><h3 id="启动程序"><a href="#启动程序" class="headerlink" title="启动程序"></a>启动程序</h3><p>gdb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看当前进程的虚拟内存映射"><a href="#查看当前进程的虚拟内存映射" class="headerlink" title="查看当前进程的虚拟内存映射"></a>查看当前进程的虚拟内存映射</h3><p>这将显示程序的各个内存段及其地址范围、权限等信息。</p>
+<p>gdb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmmap</span><br></pre></td></tr></table></figure>
+
+<h2 id="寄存器及寻址方式"><a href="#寄存器及寻址方式" class="headerlink" title="寄存器及寻址方式"></a>寄存器及寻址方式</h2><h3 id="汇编指令与寄存器"><a href="#汇编指令与寄存器" class="headerlink" title="汇编指令与寄存器"></a>汇编指令与寄存器</h3><ul>
+<li>mov：将值从一个寄存器移动到另一个寄存器或内存地址。</li>
+<li>push：将寄存器的值压入栈中，ESP&#x2F;ESP减少。</li>
+<li>pop：从栈中弹出值到寄存器，ESP&#x2F;ESP增加。</li>
+<li>call：调用函数，将返回地址压入栈中。</li>
+<li>ret：从函数返回，从栈中弹出返回地址到EIP&#x2F;RIP。</li>
+</ul>
+<h3 id="立即寻址方式"><a href="#立即寻址方式" class="headerlink" title="立即寻址方式"></a>立即寻址方式</h3><p>​    mov eax, 11         ; 将11赋值给eax<br>​    add eax, 114504     ; eax加上114504<br>​    sub eax, 1          ; eax减去1</p>
+<p>最后eax的值为11+114504-1&#x3D;114514</p>
+<h3 id="寄存器寻址方式"><a href="#寄存器寻址方式" class="headerlink" title="寄存器寻址方式"></a>寄存器寻址方式</h3><p>​    mov ebx, 0x36d      ; 将0x36d赋值给ebx<br>​    mov edx, ebx        ; 将ebx的值赋值给edx</p>
+<h3 id="直接寻址方式（存地址）"><a href="#直接寻址方式（存地址）" class="headerlink" title="直接寻址方式（存地址）"></a>直接寻址方式（存地址）</h3><p>​    mov ecx, msg      ; 将msg的地址赋值给ecx </p>
+<p>eg：mov     ecx, dword_80490E8 </p>
+<p><em><code>dword_80490E8</code> 是一个 32 位的双字（double word），其值是一个内存地址。这条指令的作用是<strong>将内存地址 0x80490E8 直接赋值给寄存器 ecx</strong>。这意味着 ecx 现在存储的是这个地址本身，而不是该地址所指向的数据。</em></p>
+<h3 id="寄存器间接寻址方式（存对应地址上所对应的值）"><a href="#寄存器间接寻址方式（存对应地址上所对应的值）" class="headerlink" title="寄存器间接寻址方式（存对应地址上所对应的值）"></a>寄存器间接寻址方式（存对应地址上所对应的值）</h3><p>​    mov esi, msg        ; 将msg的地址赋值给esi<br>​    mov eax, [esi]      ; 将esi所指向的地址的值赋值给eax</p>
+<p><em>方括号 <code>[ ]</code> 表示间接寻址，即访问的是括号内表达式所指向的内存<strong>地址中的内容</strong>，而不是表达式本身。</em></p>
+<p>.data:080490E8 57 65 6C 63                   dword_80490E8 dd 636C6557h   *这段代码表示的是在地址 <code>080490E8</code> 处的数据段中定义了一个双字（dword）变量 <code>dword_80490E8</code>，其值为 <code>636C6557h</code>*其中h为汇编中表示16进制数的后缀</p>
+<h3 id="寄存器相对寻址方式"><a href="#寄存器相对寻址方式" class="headerlink" title="寄存器相对寻址方式"></a><em>寄存器相对寻址方式</em></h3><p>​    mov ecx, msg        ; 将msg的地址赋值给ecx<br>​    add ecx, 4          ; 将ecx 寄存器中的值增加4（地址加4）<br>​    mov eax, [ecx]      ; 将ecx所指向的地址的值赋值给eax</p>
+<h3 id="基址变址寻址方式"><a href="#基址变址寻址方式" class="headerlink" title="基址变址寻址方式"></a>基址变址寻址方式</h3><p>​    mov ecx, msg        ; 将msg的地址赋值给ecx<br>​    mov edx, 2          ; 将2赋值给edx<br>​    mov eax, [ecx + edx*2]  ; 将ecx+edx*2所指向的地址的值赋值给eax</p>
+<h3 id="相对基址变址寻址方式"><a href="#相对基址变址寻址方式" class="headerlink" title="相对基址变址寻址方式"></a>相对基址变址寻址方式</h3><p>​    mov ecx, msg        ; 将msg的地址赋值给ecx<br>​    mov edx, 1          ; 将1赋值给edx<br>​    add ecx, 8          ; 将ecx加上8<br>​    mov eax, [ecx + edx*2 - 6]  ; 将ecx+edx*2-6所指向的地址的值赋值给eax</p>
+<h2 id="gcc编译文件"><a href="#gcc编译文件" class="headerlink" title="gcc编译文件"></a>gcc编译文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o hello hello.c</span><br><span class="line">gcc flag.s -o flag</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="关闭所有保护："><a href="#关闭所有保护：" class="headerlink" title="关闭所有保护："></a>关闭所有保护：</h3><ol>
+<li><p>**<code>-fno-stack-protector</code>**：</p>
+<ul>
+<li>禁用堆栈保护器（Stack Protector），防止在函数调用中插入额外的检查代码。</li>
+</ul>
+</li>
+<li><p>**<code>-z execstack</code>**：</p>
+</li>
+</ol>
+<ul>
+<li>允许堆栈执行，禁用 NX 位（No-eXecute）保护。</li>
+</ul>
+<ol start="3">
+<li><p>**<code>-Wl,-z,norelro</code>**：</p>
+<ul>
+<li>禁用只读重定位表（RELRO），使数据段不被标记为只读。</li>
+</ul>
+</li>
+<li><p>**<code>-D_FORTIFY_SOURCE=0</code>**：</p>
+</li>
+</ol>
+<ul>
+<li>禁用源代码级别的安全强化功能。</li>
+</ul>
+<ol start="5">
+<li>**<code>-no-pie</code>**：</li>
+</ol>
+<ul>
+<li>禁用位置独立代码（PIE），生成非位置独立的可执行文件，不利于 ASLR 的有效性。</li>
+</ul>
+<h3 id="开启所有保护："><a href="#开启所有保护：" class="headerlink" title="开启所有保护："></a>开启所有保护：</h3><ul>
+<li>**<code>-fstack-protector-all</code>**：启用全面的堆栈保护器。</li>
+<li>**<code>-z relro</code>**：启用部分 RELRO。</li>
+<li>**<code>-z now</code>**：启用完全 RELRO。</li>
+<li>**<code>-D_FORTIFY_SOURCE=2</code>**：启用源代码级别的强化。</li>
+<li>**<code>-pie</code>**：生成位置独立的可执行文件（PIE），有助于 ASLR。</li>
+<li>**<code>-Wl,-z,noexecstack</code>**：确保堆栈不可执行（默认情况下通常是这样的）。</li>
+</ul>
+<h2 id="命令注入获取shell"><a href="#命令注入获取shell" class="headerlink" title="命令注入获取shell"></a>命令注入获取shell</h2><p>下面这段为连上靶机后执行的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">How much do you know about Linux commands? </span><br><span class="line"></span><br><span class="line">1.id</span><br><span class="line">2.ls</span><br><span class="line">3.cat /ctfshow_flag</span><br><span class="line">4.su</span><br><span class="line">5.exit</span><br><span class="line"></span><br><span class="line">Enter the command you want choose:(1.2.3.4 or 5)</span><br><span class="line"></span><br><span class="line">2</span><br><span class="line">Which directory?(&#x27;/&#x27;,&#x27;./&#x27; or the directiry you want?)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用；分隔ls并根据下方源码中的获取输入的漏洞送&#x2F;bin&#x2F;sh进去，如果不用；分隔则只会尝试列出&#x2F;bin&#x2F;sh目录。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Which directory?(&#x27;/&#x27;,&#x27;./&#x27; or the directiry you want?)&quot;</span>);</span><br><span class="line">        read(<span class="number">0</span>, buf, <span class="number">0xA</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>(dest, buf);</span><br><span class="line">        system(dest);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Execution succeeded!&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当输入2时会执行上面的代码，其中read获取输入，0xAuLL对应十进制值为10故最多可输入10个字节，strcat将buf的值赋值给dest，dest又在system中故可输入&#x2F;bin&#x2F;sh获取shell。</p>
+<p>；为分隔command1;command;command三条指令会按照顺序执行，并且前面的指令执行是否成功不会影响后边指令的执行。</p>
+<p>command1&amp;command 两条指令会在后台同时执行。</p>
+<h2 id="文件输出流"><a href="#文件输出流" class="headerlink" title="文件输出流"></a>文件输出流</h2><p>文件输出流（File Output Stream）是一种用于将数据写入到文件中的输入&#x2F;输出流，</p>
+<ul>
+<li><p><strong>基本功能</strong>：文件输出流主要用于创建新文件或将数据追加到现有文件。</p>
+</li>
+<li><p><strong>工作原理</strong>：当你创建一个文件输出流对象并指定目标文件后，你可以通过该对象的方法来写入数据。这些方法包括 <code>write</code> 方法，可以接受单个字节或字节数组作为参数。</p>
+</li>
+</ul>
+<p><strong>关闭输出流</strong>是一个非常重要的步骤，它确保了所有缓冲的数据都被正确地写入到目标文件，并且释放了系统资源。具体来说，关闭输出流会有以下几个效果：</p>
+<ol>
+<li><strong>刷新缓冲区</strong>：如果输出流有内部缓冲区（大多数情况下都有），关闭流会强制将缓冲区中的所有未写入数据写入到目标文件中。这确保了没有任何数据丢失。</li>
+<li><strong>释放资源</strong>：操作系统对打开的文件描述符数量有限制。如果不及时关闭输出流，可能会导致资源泄露，最终耗尽可用的文件描述符，从而影响程序的正常运行。</li>
+<li><strong>防止数据损坏</strong>：在某些情况下，不关闭输出流可能导致数据部分写入或完全未写入，从而造成数据损坏或不完整。</li>
+<li><strong>提高性能</strong>：及时关闭不再需要的输出流可以减少不必要的内存占用和系统开销，有助于提高程序的整体性能。</li>
+<li><strong>异常处理</strong>：即使在发生异常的情况下，也应该尽量关闭输出流。使用 try-with-resources 语句可以自动管理资源的关闭，简化代码并减少错误发生的可能性。</li>
+</ol>
+<h2 id="设置ALSR保护参数"><a href="#设置ALSR保护参数" class="headerlink" title="设置ALSR保护参数"></a>设置ALSR保护参数</h2><p>ASLR(Address Space Layout Randomization)是一种操作系统级别的安全保护机制，旨在增加软件系统的安全性。它通过随机化程序在内存中的布局，使得攻击者难以准确地确定关键代码和数据的位置，从而增加了利用软件漏洞进行攻击的难度。</p>
+<p><strong>开启不同等级会有不同的效果：</strong><br>1.内存布局随机化：ASLR的主要目标是随机化程序的内存布局。在传统的内存布局中，不同的库和模块通常会在固定的内存位置上加载，攻击者可以利用这种可预测性来定位和利用漏洞。ASLR通过随机化这些模块的加载地址，使得攻击者无法准确地确定内存中的关键数据结构和<br>代码的位置。<br>2.地址空间范围的随机化：ASLR还会随机化进程的地址空间范围。在传统的地址空间中，栈、堆、代码段和数据段通常会被分配到固定的地址范围中。ASLR会随机选择地址空间的起始位置和大小，从而使得这些重要的内存区域在每次运行时都有不同的位置。<br>3.随机偏移量：ASLR会引入随机偏移量，将程序和模块在内存中的相对位置随机化。这意味着每个模块的实际地址是相对于一个随机基址偏移的，而不是绝对地址。攻击者需要在运行时发现这些偏移量，才能准确地定位和利用漏洞。<br>4.堆和栈随机化：ASLR也会对堆和栈进行随机化。堆随机化会在每次分配内存时选择不同的起始地址，使得攻击者无法准确地预测堆上对象的位置。栈随机化会随机选择栈帧的起始位置，使得攻击者无法轻易地覆盖返回地址或控制程序流程。</p>
+<p>在linux中，ALSR的全局配置&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;randomize_va_space(这是一个用于控制地址随机化的文件)有三种情况</p>
+<p><img src="/../images/show%E5%89%8D%E7%BD%AE/ALSR.png" alt="1"></p>
+<p>修改一个文件的ASLR：</p>
+<p>首先将终端目录定位到文件，或者直接在文件处打开终端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/sys/kernel/randomize_va_space </span><br><span class="line"><span class="comment">#查看当前ASLR的操作数</span></span><br><span class="line"><span class="built_in">sudo</span> sh -c <span class="string">&#x27;echo 1 &gt; /proc/sys/kernel/randomize_va_space&#x27;</span></span><br><span class="line"><span class="comment">#将此文件的ASLR操作数改为0</span></span><br><span class="line"><span class="comment">#此处sh-c是为了在子shell中执行命令，这样sudo会为整个命令提供超级用户权限</span></span><br></pre></td></tr></table></figure>
+
+<p>在未开启PIE的情况下不论ASLR操作数是多少函数的地址都不会改变。</p>
+<p><strong>地址空间布局随机化（Address Space Layout Randomization, ASLR）和位置无关可执行文件（Position-Independent Executable, PIE）是两个重要的安全机制。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cdu-mint.github.io">mint</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cdu-mint.github.io/2024/11/04/ctfshow%E5%89%8D%E7%BD%AE/">http://cdu-mint.github.io/2024/11/04/ctfshow%E5%89%8D%E7%BD%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/images/Decoration/%E9%9B%85.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/11/10/%E7%8E%84%E6%AD%A6%E6%9D%AF/" title="2024玄武杯"><img class="cover" src="/images/Decoration/%E9%9B%85.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">2024玄武杯</div></div></a></div><div class="next-post pull-right"><a href="/2024/10/28/%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" title="第一篇文章"><img class="cover" src="/images/Decoration/%E9%9B%85.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">第一篇文章</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mint</div><div class="author-info__description">pwn小白</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">this is my blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9BLinux%E6%8C%87%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">一些Linux指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH"><span class="toc-number">1.1.</span> <span class="toc-text">SSH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ls"><span class="toc-number">1.2.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nc"><span class="toc-number">1.3.</span> <span class="toc-text">nc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#echo"><span class="toc-number">1.4.</span> <span class="toc-text">echo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exec"><span class="toc-number">1.5.</span> <span class="toc-text">exec</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5"><span class="toc-number">2.</span> <span class="toc-text">编译与链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nasm"><span class="toc-number">2.1.</span> <span class="toc-text">nasm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ld"><span class="toc-number">2.2.</span> <span class="toc-text">ld</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-gdb-%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">常见的 gdb 命令：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">3.1.</span> <span class="toc-text">启动程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84"><span class="toc-number">3.2.</span> <span class="toc-text">查看当前进程的虚拟内存映射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%8F%8A%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">寄存器及寻址方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E4%B8%8E%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">汇编指令与寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%8B%E5%8D%B3%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">立即寻址方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.3.</span> <span class="toc-text">寄存器寻址方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F%EF%BC%88%E5%AD%98%E5%9C%B0%E5%9D%80%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">直接寻址方式（存地址）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E9%97%B4%E6%8E%A5%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F%EF%BC%88%E5%AD%98%E5%AF%B9%E5%BA%94%E5%9C%B0%E5%9D%80%E4%B8%8A%E6%89%80%E5%AF%B9%E5%BA%94%E7%9A%84%E5%80%BC%EF%BC%89"><span class="toc-number">4.5.</span> <span class="toc-text">寄存器间接寻址方式（存对应地址上所对应的值）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E7%9B%B8%E5%AF%B9%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.6.</span> <span class="toc-text">寄存器相对寻址方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E5%9D%80%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.7.</span> <span class="toc-text">基址变址寻址方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%AF%B9%E5%9F%BA%E5%9D%80%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">4.8.</span> <span class="toc-text">相对基址变址寻址方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gcc%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">gcc编译文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E6%89%80%E6%9C%89%E4%BF%9D%E6%8A%A4%EF%BC%9A"><span class="toc-number">5.1.</span> <span class="toc-text">关闭所有保护：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%89%80%E6%9C%89%E4%BF%9D%E6%8A%A4%EF%BC%9A"><span class="toc-number">5.2.</span> <span class="toc-text">开启所有保护：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96shell"><span class="toc-number">6.</span> <span class="toc-text">命令注入获取shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E6%B5%81"><span class="toc-number">7.</span> <span class="toc-text">文件输出流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEALSR%E4%BF%9D%E6%8A%A4%E5%8F%82%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">设置ALSR保护参数</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/08/VNwp/" title="VN wp"><img src="/images/Decoration/%E9%9B%85.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VN wp"/></a><div class="content"><a class="title" href="/2025/02/08/VNwp/" title="VN wp">VN wp</a><time datetime="2025-02-08T11:22:41.000Z" title="Created 2025-02-08 19:22:41">2025-02-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/19/%E6%98%A5%E7%A7%8B%E6%9D%AF/" title="比赛复现"><img src="/images/Decoration/%E9%9B%85.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="比赛复现"/></a><div class="content"><a class="title" href="/2025/01/19/%E6%98%A5%E7%A7%8B%E6%9D%AF/" title="比赛复现">比赛复现</a><time datetime="2025-01-19T04:55:55.000Z" title="Created 2025-01-19 12:55:55">2025-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/17/%E7%9C%8B%E8%BF%87%E7%9A%84%E5%A5%BD%E5%8D%9A%E5%AE%A2%E6%8E%A8%E8%8D%90/" title="看过的好博客推荐"><img src="/images/Decoration/%E9%9B%85.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="看过的好博客推荐"/></a><div class="content"><a class="title" href="/2025/01/17/%E7%9C%8B%E8%BF%87%E7%9A%84%E5%A5%BD%E5%8D%9A%E5%AE%A2%E6%8E%A8%E8%8D%90/" title="看过的好博客推荐">看过的好博客推荐</a><time datetime="2025-01-16T16:44:51.000Z" title="Created 2025-01-17 00:44:51">2025-01-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/16/git%E5%AD%A6%E4%B9%A0/" title="Git学习"><img src="/images/Decoration/%E9%9B%85.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git学习"/></a><div class="content"><a class="title" href="/2025/01/16/git%E5%AD%A6%E4%B9%A0/" title="Git学习">Git学习</a><time datetime="2025-01-16T07:07:30.000Z" title="Created 2025-01-16 15:07:30">2025-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/10/CSAPP/" title="CSAPP"><img src="/images/Decoration/%E9%9B%85.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP"/></a><div class="content"><a class="title" href="/2025/01/10/CSAPP/" title="CSAPP">CSAPP</a><time datetime="2025-01-10T03:49:59.000Z" title="Created 2025-01-10 11:49:59">2025-01-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/images/Decoration/%E9%9B%85.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By mint</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
